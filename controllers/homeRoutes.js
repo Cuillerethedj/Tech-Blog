@@ -1,5 +1,5 @@
 const router = require('express').Router();
-const { Posts, comments } = require('../models');
+const { Posts, Comments } = require('../models');
 // Import the custom middleware
 const withAuth = require('../utils/auth');
 
@@ -9,18 +9,19 @@ router.get('/', async (req, res) => {
     const dbPostsData = await Posts.findAll({
       include: [
         {
-          model: comments,
-          attributes: ['filename', 'description'],
+          model: Comments,
+          // attributes: ['filename', 'description'],
         },
       ],
     });
 
-    const galleries = dbPostsData.map((Posts) =>
+    const allPosts = dbPostsData.map((Posts) =>
       Posts.get({ plain: true })
     );
 
-    res.render('homepage', {
-      galleries,
+
+    res.render('home', {
+      allPosts: allPosts,
       loggedIn: req.session.loggedIn,
     });
   } catch (err) {
@@ -79,6 +80,21 @@ router.get('/login', (req, res) => {
   }
 
   res.render('login');
+});
+router.get('/signup', (req, res) => {
+  if (req.session.loggedIn) {
+    res.redirect('/');
+    return;
+  }
+
+  res.render('sign up');
+});
+
+
+router.get('/dashboard', (req, res) => {
+
+
+  res.render('dashboard');
 });
 
 module.exports = router;
