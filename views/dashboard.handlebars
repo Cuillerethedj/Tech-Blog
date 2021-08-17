@@ -3,15 +3,30 @@
 <form>
 
 	<p>title</p>
-	<input type="text" name="title"></input>
+	<input id = "title" type="text" name="title"></input>
 
 	<p>text</p>
-	<input type="text" name="title"></input>
-	<button>Save!</button>
+	<input id = "text" type="text" name="text"></input>title"></input>
+	
 </form>
+<button id = "submit"  name="">Save!</button>
 
 
 <script>
 	console.log('Do the on click for the form and do a fetch call!! smack the /api/posts route')
+
+	document.getElementById ('submit').addEventListener('click', function(){
+		console.log("you got clicked")
+		var title = document.getElementById ('title').value;
+		var text = document.getElementById ('text').value;
+		console.log('r stuff', title,text)
+
+		fetch('/posts', {
+      method: 'POST',
+      body: JSON.stringify({ title: title,text: text}),
+      headers: { 'Content-Type': 'application/json' },
+    })
+
+	}) 
 
 </script>

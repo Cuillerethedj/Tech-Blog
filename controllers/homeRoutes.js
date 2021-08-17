@@ -32,31 +32,42 @@ router.get('/', async (req, res) => {
 
 // GET one Posts
 // Use the custom middleware before allowing the user to access the Posts
-router.get('/Posts/:id', withAuth, async (req, res) => {
+router.get('/posts/:id', withAuth, async (req, res) => {
   try {
     const dbPostsData = await Posts.findByPk(req.params.id, {
       include: [
         {
-          model: comments,
-          attributes: [
-            'id',
-            'title',
-            'artist',
-            'exhibition_date',
-            'filename',
-            'description',
-          ],
+          model: Comments
         },
       ],
     });
 
-    const Posts = dbPostsData.get({ plain: true });
-    res.render('Posts', { Posts, loggedIn: req.session.loggedIn });
+    const singlePost = dbPostsData.get({ plain: true });
+    console.log('Single post from DB', singlePost);
+    res.render('singlepost', { singlePost, loggedIn: req.session.loggedIn });
   } catch (err) {
     console.log(err);
     res.status(500).json(err);
   }
 });
+
+router.post('/posts', async (req, res) => {
+  console.log('We hit out post create route!!!!', req.body)
+  console.log('session who is logged in', req.session)
+
+  Posts.create({title: req.body.title,content: req.body.text,user_id: req.session.user_id}).then((data,err) => {
+    console.log( 'DB',data,err)
+  })
+})
+
+router.post('/createComment', async (req, res) => {
+  console.log('We hit out comment create route!!!!', req.body)
+  console.log('session who is logged in', req.session)
+
+  // do create with Comments model!!!// Coments.create({text: req.body.comment})
+  
+
+})
 
 // GET one comments
 // Use the custom middleware before allowing the user to access the comments

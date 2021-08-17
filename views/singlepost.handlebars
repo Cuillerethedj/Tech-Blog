@@ -1,0 +1,23 @@
+<h1> Single post coming soon!</h1>
+<h2>{{singlePost.title}}</h2>
+<p>{{singlePost.content}}</p>
+
+<p>Add a comment!</p>
+<input id = "comment"></input>
+<button id = "add">Save comment</button>
+
+<script>
+document.getElementById ('add').addEventListener('click', function(){
+	var comment = document.getElementById('comment').value;
+		console.log('r stuff', comment)
+			
+			fetch('/createComment', {
+      method: 'POST',
+      body: JSON.stringify({comment: comment}),
+      headers: { 'Content-Type': 'application/json' },
+    })
+})
+
+
+
+</script>

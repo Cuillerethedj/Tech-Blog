@@ -40,6 +40,7 @@
 						});
 					return;
 				}
+				console.log('user who just logged in!', dbUserData.dataValues.id)
 
 				const validPassword = await dbUserData.checkPassword(req.body.password);
 
@@ -54,6 +55,7 @@
 
 				req.session.save(() => {
 					req.session.loggedIn = true;
+					req.session.user_id = dbUserData.dataValues.id
 
 					res
 						.status(200)
