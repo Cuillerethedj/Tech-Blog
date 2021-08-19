@@ -65,7 +65,13 @@ router.post('/createComment', async (req, res) => {
   console.log('session who is logged in', req.session)
 
   // do create with Comments model!!!// Coments.create({text: req.body.comment})
-  
+  Comments.create({
+    text: req.body.comment, 
+    user_id: req.session.user_id,
+    post_id: parseInt(req.body.post_id) 
+  }).then((data,err) => {
+    console.log( 'DB',data,err)
+  })
 
 })
 
